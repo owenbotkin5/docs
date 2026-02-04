@@ -1,4 +1,57 @@
 ---
-title: 'Funding'
+title: "Funding"
+description: "How we keep the market price in-line with the index value in the near-term."
 ---
 
+## Purpose
+
+The funding rate is designed to keep the perpetual market price aligned with its underlying index value. It does this by periodically transferring payments between traders on the two sides of the market.
+
+When the market price trades above the index, longs pay shorts; when it trades below the index, shorts pay longs.
+
+This mechanism incentivizes prices to converge toward the index over time.
+
+## Calculation
+
+The funding rate is calculated as the time-weighted average difference (as a percentage) between the market price and the 24-hour average index value.
+
+To compute the index rate, current market prices and 24-hour average index values are sampled at fixed intervals over a rolling 24-hour window. Measurements are taken at the higher frequency of:
+
+- Every 30 minutes, or
+- Each index update.
+
+All sampled observations are incorporated into the time-weighted average calculation.
+
+Funding is charged once per day at 9:30AM (UTC-5) and is calculated per user as:
+
+$$
+Funding\ Payment = Funding\ Rate \cdot Current\ Market\ Price \cdot Number\ of\ Contracts
+$$
+
+## Sign
+
+The sign of the funding rate is determined by time-weighted average calculation above. At any individual point, the difference between the market price and the 24-hour average index may either be positive or negative. The average of such individual points determines the ultimate direction of payment.
+
+If the funding rate is positive, longs pay shorts, as the average difference between the market price and the 24-hour average index value across our sampling period was positive. If the funding rate is negative, shorts pay longs.
+
+<Expandable title="worked example">
+  Assume a current market price of \$100 per contract and a current position size of 10 contracts. If: 
+
+  - Average difference between market price and 24-hour index value (over our 24-hour sampling period) $= 0.02%$.
+
+  Then:
+
+  - Funding rate $= 0.02%$.
+  - Longs will be paying shorts (positive funding rate).
+  - Total funding payment for the position $= 0.0002 \cdot 100 \cdot 10 = \$0.20$.
+</Expandable>
+
+## Payment Method
+
+We charge the funding rate to your **balance of available funds**. 
+
+<Note>
+  This is treated as **realized PnL.**
+</Note>
+
+The funding rate is **not** collateralized against your position and is unrelated to the unrealized PnL generated from any currently held contracts.

@@ -1,4 +1,22 @@
 ---
-title: 'Margining'
+title: "Margining"
+description: "Forum perpetual-style contracts use 1x leverage and cross (portfolio-level) margining."
 ---
 
+When you open a long or short position, you are required to post the full notional value upfront, calculated as:
+
+$$
+Contract\ Price \cdot Number\ of\ Contracts
+$$
+
+<Expandable title="example">
+  10 contracts at \$50 → initial margin = \$500.
+</Expandable>
+
+Forum uses **cross margining**, so margin and liquidation risk are calculated across your entire portfolio, not just individual positions. This includes all open positions, outstanding orders, and available funds.
+
+After positions are opened, we continuously monitor overall account health. If your available funds dips below \$0 (this may occur with funding payments), your account will be placed in a “reduce only” state, where the only trades you can make will be those that reduce your overall exposure. If your portfolio value (including open positions, outstanding orders, and available funds) falls below the maintenance margin, your account becomes eligible for liquidation.
+
+**The maintenance margin is 15% of total open notional value.**
+
+When your maintenance margin equals 75% of your portfolio value, we will issue a margin call via email. If maintenance margin equals 100% of your portfolio value, we will begin liquidating positions.

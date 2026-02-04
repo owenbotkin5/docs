@@ -71,8 +71,8 @@ We integrate data in our general index from four primary platforms. All metrics 
     ### **TwitterAPI.io API (Paid)**
 
     - **Frequency:** Data collected every 30 minutes, normalized to 15 minutes (metrics divided by 2 pre-transformation).
-    - **Discovery:** We use the `advanced_search` endpoint (`queryType="top"`) looking at the last hour of activity.
-    - **Metrics:** We paginate up to 100 posts, summing `likeCount`, `replyCount`, and `retweetCount`.
+    - **Discovery:** We use the `advanced_search` endpoint `query={keyword, time frame}`,`queryType="top"`), looking at posts over the last hour. This returns a paginated list with 20 results per page.
+    - **Metrics:** We paginate up to 100 posts, summing `likeCount`, `replyCount`, and `retweetCount`across all posts.
 
     We apply a $log(x+1)$ transformation to each metric and then apply the following weights:
 
@@ -115,11 +115,7 @@ We integrate data in our general index from four primary platforms. All metrics 
 
 ## Final Calculation
 
-The **Attention Index** is the final weighted combination of the Social Basket and Google Trends, scaled by a factor of 10.
-
-### The Master Formula
-
-$Index = 10 \cdot [0.30G + 0.70(0.40Y + 0.30R + 0.30X)]$
+The **Attention Index** is the final weighted combination of the Social Metrics and Google Trends, scaled by a factor of 10.
 
 | Variable | Platform      | Weight              |
 | :------- | :------------ | :------------------ |
@@ -128,8 +124,12 @@ $Index = 10 \cdot [0.30G + 0.70(0.40Y + 0.30R + 0.30X)]$
 | **R**    | Reddit        | 21% (30% of Social) |
 | **X**    | X (Twitter)   | 21% (30% of Social) |
 
+### Formula
+
+$Index = 10 \cdot [0.30G + 0.70(0.40Y + 0.30R + 0.30X)]$
+
 <Expandable title="Step-by-Step Example Walkthrough">
-  Suppose platform scores (post-transformation) are **Y: 6.0, R: 4.0, X: 5.0, G: 1.0**:
+  Suppose platform scores (post-transformation) are **Y=6.0, R=4.0, X=5.0, G=1.0**:
 
   1. **Social Metric:** $0.40(6.0) + 0.30(4.0) + 0.30(5.0) = 5.10$
   2. **Preliminary Index:** $0.30(1.0) + 0.70(5.10) = 3.87$

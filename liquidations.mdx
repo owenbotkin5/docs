@@ -1,4 +1,12 @@
 ---
-title: 'Liquidations'
+title: "Liquidations"
+description: "During the paper-trading alpha, we do not liquidate positions."
 ---
 
+Liquidations are designed to prevent accounts from becoming undercollateralized and are based on overall portfolio risk, not individual positions.
+
+Generally, liquidation is a protective move: we close positions (fully) against market liquidity. The system uses mark prices and available liquidity to avoid cascading failures. This protects you (from uncapped downside) and the market as a whole.
+
+<Note>
+  Liquidations do not currently occur during the paper trading alpha.
+</Note>

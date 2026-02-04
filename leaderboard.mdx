@@ -1,4 +1,20 @@
 ---
-title: 'Leaderboard'
+title: "Leaderboard"
+description: "The leaderboard is public."
 ---
 
+ It shows the top 10 traders by total PnL (realized + unrealized) for the timeframe you select.
+
+### How it works:
+
+- Timeframes: `Daily`, `Weekly`, `Monthly`, `All-time`. If `Daily` is selected, the PnL shown is the change each trader generated over the past 24 hours.
+- Data source: We take account snapshots every hour to preserve market integrity.
+- Ranking cadence: Every 3 hours we compute PnL differences for the last day, week, and month (and update the leaderboard) using these snapshots.
+
+<Expandable title="example">
+  To produce the `Daily` view at 12:00, we compare the most recent snapshot (12:00) with the snapshot 24 hours earlier. The difference (realized + unrealized) is each trader’s `Daily` PnL. The updated leaderboard posts every three hours using the latest available snapshots.
+</Expandable>
+
+<Note>
+  Small timing differences can occur between the live account view and the public leaderboard due to snapshot timing and the 3-hour publishing cadence.
+</Note>

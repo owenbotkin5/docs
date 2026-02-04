@@ -1,4 +1,14 @@
 ---
-title: 'Overview'
+title: "Overview"
+description: "Perpetual-style futures are designed to give market participants synthetic long or short exposure to any underlying asset. "
 ---
 
+That is, they allow market participants to trade an underlying asset without owning the asset itself. This occurs via a **funding rate mechanism**, which keeps the market price in-line with the underlying asset price.
+
+<Info>
+  In our case, the **Attention Index** serves as the underlying asset, or our “spot price.”
+</Info>
+
+Forum’s contracts are 5-year, cash-settled, perpetual-style futures. They trade continuously, are anchored to the underlying Attention Index, and are designed to give participants long or short exposure to changes in public attention. 
+
+At the expiration date, the contract settles to the time-weighted average value of the Attention Index (converted 1:1 to USD) over the preceding 24 hours. Positions are fully cash-settled. No underlying media or IP changes hands.
