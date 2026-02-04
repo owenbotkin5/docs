@@ -12,7 +12,7 @@ To most accurately measure attention, we prioritize active engagement over passi
 The methodology for our **general attention index** is shown below.
 
 <Warning>
-  The specific methodologies may vary depending on the market category. Be sure to check the methodology of each index **before** placing a trade.
+  The specific methodologies may vary depending on the market category. Be sure to check the methodology of each index before placing a trade.
 </Warning>
 
 ## Data Collection
@@ -25,7 +25,7 @@ The keyword we use is the same as the name of the respective market.
   For example, the “Claude Code” market uses “Claude Code” as its keyword.
 </Tip>
 
-Most engagement data follows a power law. So, we apply a $log(x+1)$ transformation on each metric to stabilize variance and mitigate the impact of outliers.
+Most engagement data follows a power law. So, we apply a $ln(x+1)$ transformation on each metric to stabilize variance and mitigate the impact of outliers.
 
 ## Frequency
 
@@ -56,7 +56,7 @@ We integrate data in our general index from four primary platforms. All metrics 
     - **Discovery:** We use the `search.list` endpoint (`type.video`, `order.relevance`, `publishedAfter: t-24h`, `q={keyword}`) to obtain a list of the video IDs of the 50 most relevant videos published over the last 24 hours. This call also returns `totalResults`, which we use in our calculations below.
     - **Metrics:** We use the `videos.list` endpoint (`part.statistic`, `id={50 video IDs}`) to find `viewCount`, `likeCount`, and `commentCount`. We convert these integer returns into strings.
 
-    We apply a $log(x+1)$ transformation to each metric and then apply the following weights:
+    We apply a $ln(x+1)$ transformation to each metric and then apply the following weights:
 
     | Metric         | Weight |
     | :------------- | :----- |
@@ -74,7 +74,7 @@ We integrate data in our general index from four primary platforms. All metrics 
     - **Discovery:** We use the `search` endpoint (`t=day`, `sort=top` ,`limit=100`, `q={keyword}`),  to obtain a paginated list with 100 posts per page.
     - **Metrics:** We paginate through results to count the total number of posts over the last 24 hours (`Total Posts`). For each post, we also count`ups` (upvotes), and `num_comments`. We sum total `ups` and total `num_comments` across all posts.
 
-    We apply a $log(x+1)$ transformation to each metric and then apply the following weights:
+    We apply a $ln(x+1)$ transformation to each metric and then apply the following weights:
 
     | Metric         | Weight |
     | :------------- | :----- |
@@ -91,7 +91,7 @@ We integrate data in our general index from four primary platforms. All metrics 
     - **Discovery:** We use the `advanced_search` endpoint `query={keyword, time frame}`,`queryType="top"`), looking at posts over the last hour. This returns a paginated list with 20 results per page.
     - **Metrics:** We paginate up to 100 posts, summing `likeCount`, `replyCount`, and `retweetCount`across all posts.
 
-    We apply a $log(x+1)$ transformation to each metric and then apply the following weights:
+    We apply a $ln(x+1)$ transformation to each metric and then apply the following weights:
 
     | Metric         | Weight |
     | :------------- | :----- |
@@ -117,14 +117,14 @@ We integrate data in our general index from four primary platforms. All metrics 
         We divide the keyword's average interest by (baseline average + 1).
       </Step>
       <Step title="Calculate Final Metric">
-        We apply a $log(x+1)$ transformation to the result.
+        We apply a $ln(x+1)$ transformation to the result.
       </Step>
     </Steps>
     <Expandable title="Example: Claude Code">
       If "Claude Code" has an average 24hr interest of `35.0` and the control baseline is `1.0`:
 
       $$
-      \log\left(\frac{35.0}{1.0 + 1}\right) = \log(17.5)
+      \ln\left(\frac{35.0}{1.0 + 1}\right) = \ln(17.5)
       $$
     </Expandable>
   </Tab>
