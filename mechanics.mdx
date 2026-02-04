@@ -29,15 +29,17 @@ Most engagement data follows a power law. So, we apply a $log(x+1)$ transformati
 
 ## Sources
 
-We integrate data from four primary platforms. All metrics are collected at fixed intervals and normalized to a **15-minute baseline** to ensure consistency across different polling frequencies.
+We integrate data in our general index from four primary platforms. All metrics are collected at fixed intervals and normalized to a 15-minute baseline to ensure consistency across different polling frequencies.
 
 <Tabs>
   <Tab title="YouTube">
-    ### **YouTube Data API v3**
+    ### **YouTube Data API v3 (Public)**
 
-    - **Frequency:** Hourly (Normalized to 15 minutes: Value / 4).
-    - **Discovery:** We use the `search.list` endpoint (`type.video`, `order.relevance`, `publishedAfter: t-24h`) to identify the 50 most relevant videos.
-    - **Metrics:** We pull `viewCount`, `likeCount`, and `commentCount` via the `videos.list` endpoint.
+    - **Frequency:** Data collected hourly, normalized to 15 minutes (metrics divided by 4 pre-transformation).
+    - **Discovery:** We use the `search.list` endpoint (`type.video`, `order.relevance`, `publishedAfter: t-24h`, `q={keyword}`) to obtain a list of the video IDs of the 50 most relevant videos published over the last 24 hours. This call also returns `totalResults`, which we use in our calculations below.
+    - **Metrics:** We use the `videos.list` endpoint (`part.statistic`, `id={50 video IDs}`) to find `viewCount`, `likeCount`, and `commentCount`. We convert these integer returns into strings.
+
+    We apply a $log(x+1)$ transformation to each metric and then apply the following weights:
 
     | Metric         | Weight |
     | :------------- | :----- |
@@ -46,27 +48,33 @@ We integrate data from four primary platforms. All metrics are collected at fixe
     | `likeCount`    | 0.15   |
     | `viewCount`    | 0.05   |
 
-    We apply a $log(x+1)$ transformation to each metric before summing for the final platform contribution.
+    We sum these metrics to score YouTube's contribution to the index.
   </Tab>
   <Tab title="Reddit">
-    ### **Reddit Public API**
+    ### **Reddit API (Public)**
 
-    - **Frequency:** Hourly (Normalized: Value / 4).
-    - **Discovery:** We use the `search` endpoint (`t=day`, `sort=top`) to obtain the top 100 posts.
-    - **Metrics:** We paginate through results to count total posts, `ups` (upvotes), and `num_comments`.
+    - **Frequency:** Data collected hourly, normalized to 15 minutes (metrics divided by 4 pre-transformation).
+    - **Discovery:** We use the `search` endpoint (`t=day`, `sort=top` ,`limit=100`, `q={keyword}`),  to obtain a paginated list of the top 100 posts.
+    - **Metrics:** We paginate through results to count the total number of posts over the last 24 hours (`Total Posts`). For each post, we also count`ups` (upvotes), and `num_comments`. We sum total `ups` and total `num_comments` across all posts.
+
+    We apply a $log(x+1)$ transformation to each metric and then apply the following weights:
 
     | Metric         | Weight |
     | :------------- | :----- |
     | `Total Posts`  | 0.50   |
     | `num_comments` | 0.30   |
     | `ups`          | 0.20   |
+
+    We sum these metrics to score Reddit's contribution to the index.
   </Tab>
   <Tab title="X (Twitter)">
-    ### **TwitterAPI.io (Paid)**
+    ### **TwitterAPI.io API (Paid)**
 
-    - **Frequency:** Every 30 minutes (Normalized: Value / 2).
+    - **Frequency:** Data collected every 30 minutes, normalized to 15 minutes (metrics divided by 2 pre-transformation).
     - **Discovery:** We use the `advanced_search` endpoint (`queryType="top"`) looking at the last hour of activity.
     - **Metrics:** We paginate up to 100 posts, summing `likeCount`, `replyCount`, and `retweetCount`.
+
+    We apply a $log(x+1)$ transformation to each metric and then apply the following weights:
 
     | Metric         | Weight |
     | :------------- | :----- |
@@ -74,22 +82,31 @@ We integrate data from four primary platforms. All metrics are collected at fixe
     | `replyCount`   | 0.30   |
     | `retweetCount` | 0.15   |
     | `likeCount`    | 0.05   |
+
+    We sum these metrics to score X's contribution to the index.
   </Tab>
   <Tab title="Google Trends">
-    ### **SerpAPI Google Trends SDK**
+    ### **SerpAPI Google Trends SDK (Paid)**
 
-    - **Frequency:** Hourly (Not normalized).
-    - **Standardization:** To eliminate volatility, we calibrate results against four stable control terms: _ankle sprain, wrist pain, broken bone,_ and _blurry vision_.
+    - **Frequency:** Data collected hourly, not normalized.
+    - **Standardization:** To eliminate volatility inherent in single-keyword Google Trends comparisons, we calibrate results for the keyword against four stable control terms: `ankle sprain`, `wrist pain`, `broken bone`, and `blurry vision`.
+    - \*\*Discovery: \*\*We use the `search` endpoint with parameters`engine = google_trends`, `date = now 1-d`, and `q = {keyword}, ankle sprain, wrist pain, broken bone, blurry vision` . We use the averages returned for our calculations.
 
-    1. **Calculate Baseline:** We take the simple average of the four control terms.
-    2. **Standardize Keyword:** We divide the keyword's average interest by the (baseline average + 1).
-    3. **Final Metric:** We apply a <Latex>
-         \\log(x+1)
-       </Latex>
-        transformation to the result.
-
+    <Steps>
+      <Step title="Calculate Baseline">
+        We take the simple average of the four control terms' averages.
+      </Step>
+      <Step title="Standardize Keyword">
+        We divide the keyword's average interest by (baseline average + 1).
+      </Step>
+      <Step title="Final Metric">
+        We apply a $log(x+1)$ transformation to the result.
+      </Step>
+    </Steps>
     <Expandable title="Example: Claude Code">
-      If **"Claude Code"** has an interest of `35.0` and the control baseline is `1.0`: $\log(35.0 / (1.0 + 1)) = \log(17.5)$
+      If **"Claude Code"** has an average 24hr interest of `35.0` and the control baseline is `1.0`:
+
+      $\log\left(\frac{35.0}{1.0 + 1}\right) = \log(17.5)$
     </Expandable>
   </Tab>
 </Tabs>
