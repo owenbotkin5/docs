@@ -27,6 +27,23 @@ The keyword we use is the same as the name of the respective market.
 
 Most engagement data follows a power law. So, we apply a $log(x+1)$ transformation on each metric to stabilize variance and mitigate the impact of outliers.
 
+## Frequency
+
+We collect data from each source at different frequencies. The index updates whenever new data arrives from any source. Sources that have not yet updated retain their most recent values until new data is received.
+
+<Expandable title="example: index update">
+  - **Source A** updates hourly
+  - **Source B** updates daily
+  - **Source C** updates weekly
+
+  If **Source A** reports new data at 1:00 PM, the index updates immediately using:
+
+  - the new value from Source A
+  - the most recent values from Sources B and C
+
+  When **Source B** or **Source C** later updates, the index updates again using their new values and the latest values from the other sources.
+</Expandable>
+
 ## Sources
 
 We integrate data in our general index from four primary platforms. All metrics are collected at fixed intervals and normalized to a 15-minute baseline to ensure consistency across different polling frequencies.

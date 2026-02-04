@@ -17,10 +17,7 @@ When the market price trades above the index, longs pay shorts; when it trades b
 
 The funding rate is calculated as the time-weighted average difference (as a percentage) between the market price and the 24-hour average index value.
 
-To compute the index rate, current market prices and 24-hour average index values are sampled at fixed intervals over a rolling 24-hour window. Measurements are taken at the higher frequency of:
-
-- Every 30 minutes, or
-- Each index update.
+To compute the index rate, current market prices and 24-hour average index values are sampled at fixed intervals over a rolling 24-hour window. Measurements are taken with each index update.
 
 All sampled observations are incorporated into the time-weighted average calculation.
 

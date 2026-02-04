@@ -17,6 +17,6 @@ Forum uses **cross margining**, so margin and liquidation risk are calculated ac
 
 After positions are opened, we continuously monitor overall account health. If your available funds dips below \$0 (this may occur with funding payments), your account will be placed in a “reduce only” state, where the only trades you can make will be those that reduce your overall exposure. If your portfolio value (including open positions, outstanding orders, and available funds) falls below the maintenance margin, your account becomes eligible for liquidation.
 
-**The maintenance margin is 15% of total open notional value.**
+**The maintenance margin is 10% of total open notional value.**
 
-When your maintenance margin equals 75% of your portfolio value, we will issue a margin call via email. If maintenance margin equals 100% of your portfolio value, we will begin liquidating positions.
+When your portfolio value falls below 125% of your maintenance margin, we will issue a margin call via email. If your portfolio value falls below your maintenance margin (\<100%), we will begin liquidating your positions.
