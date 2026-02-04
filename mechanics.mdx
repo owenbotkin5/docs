@@ -54,7 +54,7 @@ We integrate data in our general index from four primary platforms. All metrics 
     ### **Reddit API (Public)**
 
     - **Frequency:** Data collected hourly, normalized to 15 minutes (metrics divided by 4 pre-transformation).
-    - **Discovery:** We use the `search` endpoint (`t=day`, `sort=top` ,`limit=100`, `q={keyword}`),  to obtain a paginated list of the top 100 posts.
+    - **Discovery:** We use the `search` endpoint (`t=day`, `sort=top` ,`limit=100`, `q={keyword}`),  to obtain a paginated list with 100 posts per page.
     - **Metrics:** We paginate through results to count the total number of posts over the last 24 hours (`Total Posts`). For each post, we also count`ups` (upvotes), and `num_comments`. We sum total `ups` and total `num_comments` across all posts.
 
     We apply a $log(x+1)$ transformation to each metric and then apply the following weights:
