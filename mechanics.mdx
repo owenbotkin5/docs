@@ -104,9 +104,11 @@ We integrate data in our general index from four primary platforms. All metrics 
       </Step>
     </Steps>
     <Expandable title="Example: Claude Code">
-      If **"Claude Code"** has an average 24hr interest of `35.0` and the control baseline is `1.0`:
+      If "Claude Code" has an average 24hr interest of `35.0` and the control baseline is `1.0`:
 
-      $\log\left(\frac{35.0}{1.0 + 1}\right) = \log(17.5)$
+      $$
+      \log\left(\frac{35.0}{1.0 + 1}\right) = \log(17.5)
+      $$
     </Expandable>
   </Tab>
 </Tabs>
@@ -128,8 +130,8 @@ The **Attention Index** is the final weighted combination of the Social Metrics 
 
 $Index = 10 \cdot [0.30G + 0.70(0.40Y + 0.30R + 0.30X)]$
 
-<Expandable title="Step-by-Step Example Walkthrough">
-  Suppose platform scores (post-transformation) are **Y=6.0, R=4.0, X=5.0, G=1.0**:
+<Expandable title="example">
+  Suppose platform scores (post-transformation) are Y=6.0, R=4.0, X=5.0, G=1.0:
 
   1. Social Metric: $0.40(6.0) + 0.30(4.0) + 0.30(5.0) = 5.10$
   2. Preliminary Index: $0.30(1.0) + 0.70(5.10) = 3.87$
