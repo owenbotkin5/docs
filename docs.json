@@ -14,15 +14,59 @@
         "tab": "Guide",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "About Us",
             "pages": [
-              "index",
-              "quickstart",
-              "development"
+              "what-is-forum",
+              "why-make-forum"
+            ]
+          },
+          {
+            "group": "Getting Started",
+            "pages": [
+              "opening-an-account",
+              "paper-trading-alpha"
+            ]
+          },
+          {
+            "group": "Attention Index",
+            "pages": [
+              "index-overview",
+              "mechanics"
+            ]
+          },
+          {
+            "group": "Perpetual-style Futures",
+            "pages": [
+              "perp-overview",
+              "funding"
+            ]
+          },
+          {
+            "group": "Trading",
+            "pages": [
+              "orders",
+              "market-making",
+              "leverage",
+              "fees"
+            ]
+          },
+          {
+            "group": "Portfolio Health",
+            "pages": [
+              "margining",
+              "liquidations"
+            ]
+          },
+          {
+            "group": "Community",
+            "pages": [
+              "leaderboard",
+              "feedback"
             ]
           },
           {
             "group": "Customization",
+            "hidden": true,
             "pages": [
               "essentials/settings",
               "essentials/navigation"
@@ -30,6 +74,7 @@
           },
           {
             "group": "Writing content",
+            "hidden": true,
             "pages": [
               "essentials/markdown",
               "essentials/code",
@@ -39,6 +84,7 @@
           },
           {
             "group": "AI tools",
+            "hidden": true,
             "pages": [
               "ai-tools/cursor",
               "ai-tools/claude-code",
