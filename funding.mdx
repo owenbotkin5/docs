@@ -15,9 +15,9 @@ When the market price trades above the index, longs pay shorts; when it trades b
 
 ## Calculation
 
-The funding rate is calculated as the time-weighted average difference (as a percentage) between the market price and the 24-hour average index value.
+The funding rate is calculated as the time-weighted average difference (as a percentage) between the market price and the index value.
 
-To compute the index rate, current market prices and 24-hour average index values are sampled at fixed intervals over a rolling 24-hour window. Measurements are taken with each index update.
+To compute the index rate, current market prices and index values are sampled at fixed intervals over a rolling 24-hour window. Measurements are taken with each index update.
 
 All sampled observations are incorporated into the time-weighted average calculation.
 
@@ -29,14 +29,14 @@ $$
 
 ## Sign
 
-The sign of the funding rate is determined by time-weighted average calculation above. At any individual point, the difference between the market price and the 24-hour average index may either be positive or negative. The average of such individual points determines the ultimate direction of payment.
+The sign of the funding rate is determined by time-weighted average calculation above. At any individual point, the difference between the market price and the index may either be positive or negative. The average of such individual points determines the ultimate direction of payment.
 
-If the funding rate is positive, longs pay shorts, as the average difference between the market price and the 24-hour average index value across our sampling period was positive. If the funding rate is negative, shorts pay longs.
+If the funding rate is positive, longs pay shorts, as the average difference between the market price and the index value across our sampling period was positive. If the funding rate is negative, shorts pay longs.
 
 <Expandable title="worked example">
   Assume a current market price of \$100 per contract and a current position size of 10 contracts. If: 
 
-  - Average difference between market price and 24-hour index value (over our 24-hour sampling period) $= 0.02\%$.
+  - Average difference between market price and index value (over our 24-hour sampling period) $= 0.02\%$.
 
   Then:
 
