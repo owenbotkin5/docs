@@ -144,7 +144,7 @@ The **Raw Index** is the weighted combination of the Social Metrics and Google T
 $Raw\ Index = 10 \cdot [0.30G + 0.70(0.40Y + 0.30R + 0.30X)]$
 
 <Expandable title="example">
-  Suppose platform scores (post-transformation) are Y=`6.26`, R=`5.52`, X=`5.27`, G=2.92:
+  Suppose platform scores (post-transformation) are Y=`6.26`, R=`5.52`, X=`5.27`, G=`2.92`:
 
   1. Social Metric: `0.40(6.26) + 0.30(5.52) + 0.30(5.27) = 5.74`
   2. Preliminary Combination: `0.30(2.92) + 0.70(5.74) = 4.90`
@@ -195,31 +195,33 @@ A smaller `alpha` means slower response to new data and a smoother index. In pra
 </Check>
 
 <Expandable title="full worked example">
-  Suppose we are calculating the index for the keyword "Claude Code" and the following raw metrics have been collected and normalized to 15-minute baselines:
 
-  **Step 1: Platform Scores**
+Suppose we are calculating the index for the keyword "Claude Code" and the following raw metrics have been collected and normalized to 15-minute baselines:
 
-  After applying ln(x+1) transformation and per-metric weighting (see "Sources" above):
+<Steps>
+  <Step title="Platform Scores">
+    After applying ln(x+1) transformation and per-metric weighting (see "Sources" above):
 
-  - YouTube = `6.26`
-  - Reddit = `5.52`
-  - X = `5.27`
-  - Google Trends = `2.92`
+    - YouTube = `6.26`
+    - Reddit = `5.52`
+    - X = `5.27`
+    - Google Trends = `2.92`
+  </Step>
+  <Step title="Raw Combination">
+    Using the formula: `Raw Index = 10 * [0.30G + 0.70(0.40Y + 0.30R + 0.30X)]`
 
-  **Step 2: Raw Combination**
+    - Social Metric: `0.40(6.26) + 0.30(5.52) + 0.30(5.27) = 5.74`
+    - Preliminary Combination: `0.30(2.92) + 0.70(5.74) = 4.90`
+    - Raw Index: `4.90 × 10 = 49.0`
+  </Step>
+  <Step title="EMA Smoothing">
+    Assume the previous EMA value was `45.2` and `dt = 0.5` hours:
 
-  Using the formula: `Raw Index = 10 * [0.30G + 0.70(0.40Y + 0.30R + 0.30X)]`
+    - Smoothing factor: `α = 1 − 2^(−0.5/12) ≈ 0.028`
+    - EMA update: `EMA = 45.2 + 0.028 × (49.0 − 45.2) = 45.2 + 0.11 = 45.31`
 
-  - Social Metric: `0.40(6.26) + 0.30(5.52) + 0.30(5.27) = 5.74`
-  - Preliminary Combination: `0.30(2.92) + 0.70(5.74) = 4.90`
-  - Raw Index: `4.90 × 10 = 49.0`
+    The index moves from 45.2 → 45.31, absorbing only a small portion of the spike. If "Claude Code" sustains this higher level of attention over subsequent updates, the EMA will gradually converge toward the new Raw Index value.
+  </Step>
+</Steps>
 
-  **Step 3: EMA Smoothing**
-
-  Assume the previous EMA value was `45.2` and `dt = 0.5` hours:
-
-  - Smoothing factor: `α = 1 − 2^(−0.5/12) ≈ 0.028`
-  - EMA update: `EMA = 45.2 + 0.028 × (49.0 − 45.2) = 45.2 + 0.11 = 45.31`
-
-  The index moves from 45.2 → 45.31, absorbing only a small portion of the spike. If "Claude Code" sustains this higher level of attention over subsequent updates, the EMA will gradually converge toward the new Raw Index value.
 </Expandable>
